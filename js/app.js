@@ -114,4 +114,4 @@ document.querySelectorAll(".section-heading, .tool-card, .flow-card").forEach(el
   observer.observe(el);
 });
 
-openTool("chat");
+// Start on the AURA homepage. Tool views are opened only after the user selects a tool.
