@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#06152d" />
+  <meta name="description" content="AURA — an all-in-one futuristic AI assistant frontend." />
+  <title>AURA — AI Assistant</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.468.0/font/lucide.css">
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- PDF.js: used by the Document Analysis feature -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+</head>
+
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="grid-overlay"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="AURA home">
+      <div class="brand-orb"></i></div>
+      <div>
+        <strong class="aura-wordmark">AURA</strong>
+        <span>AI • SEE • LISTEN • THINK • ACT</span>
+      </div>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#chat">AI Chat</a>
+      <a href="#tools">Tools</a>
+      <a href="#workspace">Workspace</a>
+    </nav>
+
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
+        <i class="icon icon-sun"></i>
+      </button>
+      <button class="primary-btn compact" id="openAssistantBtn">
+        <i class="icon icon-mic"></i><span>Talk to AURA</span>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <i class="icon icon-menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <aside class="home-tool-panel" aria-label="AURA tools">
+        <div class="home-tool-head">
+          <!-- <span class="home-tool-orb"><i class="icon icon-sparkles"></i></span> -->
+          <div><strong>QUICK ACCESS</strong><span>ALL AURA TOOLS</span></div>
+        </div>
+        <div class="home-tool-list">
+          <button class="home-tool-btn active" data-tool="chat"><span class="home-tool-icon"><i class="icon icon-brain"></i></span><span><b>AI Chat</b><small>Think & talk</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="voice"><span class="home-tool-icon"><i class="icon icon-mic"></i></span><span><b>Voice Assistant</b><small>Speak naturally</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="vision"><span class="home-tool-icon"><i class="icon icon-camera"></i></span><span><b>Camera & Vision</b><small>See & analyze</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="youtube"><span class="home-tool-icon"><i class="icon icon-youtube"></i></span><span><b>YouTube</b><small>Search & play</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="weather"><span class="home-tool-icon"><i class="icon icon-cloud-sun"></i></span><span><b>Weather</b><small>Live updates</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="assistant"><span class="home-tool-icon"><i class="icon icon-calendar-check"></i></span><span><b>Personal Assistant</b><small>Tasks & notes</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="maps"><span class="home-tool-icon"><i class="icon icon-map-pin"></i></span><span><b>Maps</b><small>Places & routes</small></span><i class="icon icon-chevron-right"></i></button>
+          <button class="home-tool-btn" data-tool="documents"><span class="home-tool-icon"><i class="icon icon-file-search"></i></span><span><b>Document Analysis</b><small>Read & summarize</small></span><i class="icon icon-chevron-right"></i></button>
+        </div>
+      </aside>
+
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse-dot"></span> Your intelligent digital companion</div>
+        <h1>One Assistant.<br><span>Infinite Possibilities.</span></h1>
+        <p class="hero-text">
+          AURA brings voice, vision, AI chat, weather, YouTube, maps, personal productivity,
+          and document analysis into one beautifully connected interface.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-btn" data-scroll="#chat">
+            <i class="icon icon-message-circle"></i> Start with AURA
+          </button>
+          <button class="ghost-btn" data-scroll="#tools">
+            Explore capabilities <i class="icon icon-arrow-down-right"></i>
+          </button>
+        </div>
+
+        <div class="hero-metrics">
+          <div><strong>08</strong><span>Core tools</span></div>
+          <div><strong>24/7</strong><span>Ready interface</span></div>
+          <div><strong>∞</strong><span>Workflows</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="orbital-ring ring-a"></div>
+        <div class="orbital-ring ring-b"></div>
+        <div class="orbital-ring ring-c"></div>
+        <div class="ai-core">
+          <div class="core-glow"></div>
+          <div class="robot-face">
+            <span class="eye left-eye"></span>
+            <span class="eye right-eye"></span>
+            <div class="robot-mouth"></div>
+          </div>
+          <div class="core-label">AURA</div>
+        </div>
+        <div class="float-chip chip-one"><i class="icon icon-mic"></i> Voice</div>
+        <div class="float-chip chip-two"><i class="icon icon-camera"></i> Vision</div>
+        <div class="float-chip chip-three"><i class="icon icon-brain"></i> AI</div>
+        <div class="float-chip chip-four"><i class="icon icon-file-text"></i> Docs</div>
+      </div>
+    </section>
+
+    <section class="quick-panel section" id="tools">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">AURA TOOLKIT</span>
+          <h2>Everything connected in one workspace.</h2>
+        </div>
+        <p>Each tool opens inside the same interface, so the user doesn't need to jump between apps.</p>
+      </div>
+
+      <div class="tool-grid">
+        <button class="tool-card featured" data-tool="voice">
+          <span class="tool-icon"><i class="icon icon-mic"></i></span>
+          <div><h3>Voice Assistant</h3><p>Speak naturally and hear AURA respond.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="vision">
+          <span class="tool-icon"><i class="icon icon-camera"></i></span>
+          <div><h3>Camera & Vision</h3><p>Capture an image and analyze it.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="chat">
+          <span class="tool-icon"><i class="icon icon-brain"></i></span>
+          <div><h3>AI Chat</h3><p>Contextual conversational assistant.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="youtube">
+          <span class="tool-icon youtube-icon"><i class="icon icon-youtube"></i></span>
+          <div><h3>YouTube</h3><p>Search videos and play them in AURA.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="weather">
+          <span class="tool-icon"><i class="icon icon-cloud-sun"></i></span>
+          <div><h3>Weather</h3><p>Live weather using an API.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="assistant">
+          <span class="tool-icon"><i class="icon icon-calendar-check"></i></span>
+          <div><h3>Personal Assistant</h3><p>Tasks, notes and reminders.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="maps">
+          <span class="tool-icon"><i class="icon icon-map-pin"></i></span>
+          <div><h3>Maps</h3><p>Find places and open directions.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+
+        <button class="tool-card" data-tool="documents">
+          <span class="tool-icon"><i class="icon icon-file-search"></i></span>
+          <div><h3>Document Analysis</h3><p>Read and summarize TXT/PDF files.</p></div>
+          <i class="icon icon-arrow-up-right card-arrow"></i>
+        </button>
+      </div>
+    </section>
+
+    <section class="workspace section" id="workspace">
+      <div class="workspace-shell">
+        <aside class="side-rail">
+          <div class="rail-title">WORKSPACE</div>
+          <button class="rail-btn active" data-tool="chat"><i class="icon icon-message-square"></i><span>Chat</span></button>
+          <button class="rail-btn" data-tool="voice"><i class="icon icon-mic"></i><span>Voice</span></button>
+          <button class="rail-btn" data-tool="vision"><i class="icon icon-camera"></i><span>Vision</span></button>
+          <button class="rail-btn" data-tool="weather"><i class="icon icon-cloud-sun"></i><span>Weather</span></button>
+          <button class="rail-btn" data-tool="youtube"><i class="icon icon-youtube"></i><span>YouTube</span></button>
+          <button class="rail-btn" data-tool="assistant"><i class="icon icon-list-checks"></i><span>Tasks</span></button>
+          <button class="rail-btn" data-tool="maps"><i class="icon icon-map"></i><span>Maps</span></button>
+          <button class="rail-btn" data-tool="documents"><i class="icon icon-file-search"></i><span>Docs</span></button>
+        </aside>
+
+        <div class="workspace-content">
+          <div class="workspace-header">
+            <div>
+              <span class="status-pill"><span class="pulse-dot"></span> AURA ONLINE</span>
+              <h2 id="workspaceTitle">AI Chat</h2>
+            </div>
+            <div class="workspace-header-actions">
+              <button class="icon-btn" id="clearWorkspace" title="Clear current workspace"><i class="icon icon-trash-2"></i></button>
+            </div>
+          </div>
+
+          <div id="toolView" class="tool-view">
+            <!-- Tool views are injected by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="architecture section">
+      <div class="section-heading centered">
+        <span class="section-kicker">HOW AURA WORKS</span>
+        <h2>Input → Understand → Decide → Act</h2>
+        <p>A frontend-first architecture designed so backend services can be added later.</p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-card"><span>01</span><i class="icon icon-mic"></i><h3>User Input</h3><p>Voice • Text • Camera • Files</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-card"><span>02</span><i class="icon icon-scan"></i><h3>Processing</h3><p>Speech • Vision • Intent</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-card"><span>03</span><i class="icon icon-brain-circuit"></i><h3>AI Agent</h3><p>Understand • Select • Execute</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-card"><span>04</span><i class="icon icon-zap"></i><h3>Tools</h3><p>Weather • YouTube • Maps • Docs</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-card"><span>05</span><i class="icon icon-sparkles"></i><h3>Response</h3><p>Text • Voice • Action</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div><strong>AURA</strong><span>All your digital needs. One conversation.</span></div>
+    <span>Made by Team 5 stars -- Sakshi | Tushar | Vedantika | Kunal | Pranay</span>   
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
