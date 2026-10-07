@@ -33,7 +33,7 @@
 
     <nav class="desktop-nav" aria-label="Main navigation">
       <a href="#home">Home</a>
-      <a href="#chat">AI Chat</a>
+      <a href="tool.html?tool=chat" class="tool-page-link">AI Chat</a>
       <a href="#tools">Tools</a>
       <a href="#workspace">Workspace</a>
     </nav>
@@ -79,7 +79,7 @@
         </p>
 
         <div class="hero-actions">
-          <button class="primary-btn" data-scroll="#chat">
+          <button class="primary-btn" data-tool="chat">
             <i class="icon icon-message-circle"></i> Start with AURA
           </button>
           <button class="ghost-btn" data-scroll="#tools">
@@ -120,7 +120,7 @@
           <span class="section-kicker">AURA TOOLKIT</span>
           <h2>Everything connected in one workspace.</h2>
         </div>
-        <p>Each tool opens inside the same interface, so the user doesn't need to jump between apps.</p>
+        <p>Each tool opens on its own focused page, with smooth transitions and a consistent AURA experience.</p>
       </div>
 
       <div class="tool-grid">
@@ -174,35 +174,12 @@
       </div>
     </section>
 
-    <section class="workspace section" id="workspace">
-      <div class="workspace-shell">
-        <aside class="side-rail">
-          <div class="rail-title">WORKSPACE</div>
-          <button class="rail-btn" data-tool="chat"><i class="icon icon-message-square"></i><span>Chat</span></button>
-          <button class="rail-btn" data-tool="voice"><i class="icon icon-mic"></i><span>Voice</span></button>
-          <button class="rail-btn" data-tool="vision"><i class="icon icon-camera"></i><span>Vision</span></button>
-          <button class="rail-btn" data-tool="weather"><i class="icon icon-cloud-sun"></i><span>Weather</span></button>
-          <button class="rail-btn" data-tool="youtube"><i class="icon icon-youtube"></i><span>YouTube</span></button>
-          <button class="rail-btn" data-tool="assistant"><i class="icon icon-list-checks"></i><span>Tasks</span></button>
-          <button class="rail-btn" data-tool="maps"><i class="icon icon-map"></i><span>Maps</span></button>
-          <button class="rail-btn" data-tool="documents"><i class="icon icon-file-search"></i><span>Docs</span></button>
-        </aside>
-
-        <div class="workspace-content">
-          <div class="workspace-header">
-            <div>
-              <span class="status-pill"><span class="pulse-dot"></span> AURA ONLINE</span>
-              <h2 id="workspaceTitle">AI Chat</h2>
-            </div>
-            <div class="workspace-header-actions">
-              <button class="icon-btn" id="clearWorkspace" title="Clear current workspace"><i class="icon icon-trash-2"></i></button>
-            </div>
-          </div>
-
-          <div id="toolView" class="tool-view">
-            <!-- Tool views are injected by app.js -->
-          </div>
-        </div>
+    <section class="workspace section home-tool-cta" id="workspace">
+      <div class="view-card" style="text-align:center;padding:48px 24px;">
+        <span class="section-kicker">FOCUSED WORKSPACES</span>
+        <h2 style="font-family:Orbitron,'Space Grotesk',sans-serif;margin:12px 0 8px;">Choose a tool and enter its dedicated workspace.</h2>
+        <p class="sub" style="max-width:620px;margin:0 auto 20px;">AURA keeps every tool focused on its own page, while the same theme, navigation, and experience follow you throughout.</p>
+        <a class="primary-btn" href="tool.html?tool=chat"><i class="icon icon-message-circle"></i> Open AI Chat</a>
       </div>
     </section>
 

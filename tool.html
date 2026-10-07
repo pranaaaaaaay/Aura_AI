@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff8ec" />
+  <meta name="description" content="AURA dedicated AI tool workspace." />
+  <title>AURA — Tool</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.468.0/font/lucide.css">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+</head>
+
+<body class="tool-page">
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="grid-overlay"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="AURA home">
+      <div class="brand-orb"></div>
+      <div>
+        <strong class="aura-wordmark">AURA</strong>
+        <span>AI • SEE • LISTEN • THINK • ACT</span>
+      </div>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="tool.html?tool=chat">AI Chat</a>
+      <a href="index.html#tools">Tools</a>
+    </nav>
+
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
+        <i class="icon icon-sun"></i>
+      </button>
+      <a class="primary-btn compact" href="tool.html?tool=voice">
+        <i class="icon icon-mic"></i><span>Talk to AURA</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <section class="tool-page-shell">
+      <aside class="tool-page-rail" aria-label="AURA tools">
+        <div class="rail-title">AURA TOOLS</div>
+        <button class="rail-btn" data-tool="chat"><i class="icon icon-message-square"></i><span>Chat</span></button>
+        <button class="rail-btn" data-tool="voice"><i class="icon icon-mic"></i><span>Voice</span></button>
+        <button class="rail-btn" data-tool="vision"><i class="icon icon-camera"></i><span>Vision</span></button>
+        <button class="rail-btn" data-tool="weather"><i class="icon icon-cloud-sun"></i><span>Weather</span></button>
+        <button class="rail-btn" data-tool="youtube"><i class="icon icon-youtube"></i><span>YouTube</span></button>
+        <button class="rail-btn" data-tool="assistant"><i class="icon icon-list-checks"></i><span>Tasks</span></button>
+        <button class="rail-btn" data-tool="maps"><i class="icon icon-map"></i><span>Maps</span></button>
+        <button class="rail-btn" data-tool="documents"><i class="icon icon-file-search"></i><span>Docs</span></button>
+      </aside>
+
+      <div class="tool-page-content">
+        <header class="tool-page-header">
+          <div>
+            <span class="status-pill"><span class="pulse-dot"></span> AURA ONLINE</span>
+            <h1 id="toolPageTitle">AI Chat</h1>
+          </div>
+          <div class="tool-page-actions">
+            <a class="back-home" href="index.html"><i class="icon icon-arrow-left"></i> Home</a>
+            <button class="icon-btn" id="clearWorkspace" title="Refresh current tool" aria-label="Refresh current tool">
+              <i class="icon icon-refresh-cw"></i>
+            </button>
+          </div>
+        </header>
+
+        <div id="toolView" class="tool-page-view"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/app-tool.js"></script>
+</body>
+</html>
