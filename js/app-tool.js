@@ -7,11 +7,13 @@ import { renderAssistant } from "./assistant.js";
 import { renderMaps } from "./maps.js";
 import { renderDocuments } from "./documents.js";
 import { showToast } from "./utils.js";
+import { requireLogin, getUser, clearSession } from "./api.js";
 
 const toolView = document.getElementById("toolView");
 const title = document.getElementById("toolPageTitle");
 const themeBtn = document.getElementById("themeBtn");
 const clearBtn = document.getElementById("clearWorkspace");
+if (!requireLogin()) throw new Error("Login required");
 
 const tools = {
   chat: { name: "AI Chat", render: renderChat },
@@ -44,6 +46,7 @@ function renderCurrentTool() {
   });
   toolView.innerHTML = "";
   config.render(toolView);
+  if (currentTool === "weather") { const city = new URLSearchParams(location.search).get("city"); if (city) { const input=document.getElementById("cityInput"); if(input){ input.value=city; input.closest("form")?.dispatchEvent(new Event("submit",{bubbles:true,cancelable:true})); } } }
 }
 
 function navigate(tool) {

@@ -1,86 +1,11 @@
-import { escapeHTML, showToast } from "./utils.js";
-
-let tasks = JSON.parse(localStorage.getItem("auraTasks") || "[]");
-
-export function renderAssistant(container) {
-  container.innerHTML = `
-    <div class="two-col">
-      <div class="view-card">
-        <h3>Personal Assistant</h3>
-        <p class="sub">A lightweight local task and notes system. Data is stored in this browser.</p>
-        <form id="taskForm" class="chat-composer">
-          <input id="taskInput" placeholder="Add a task or reminder..." />
-          <button class="send-btn" type="submit"><i class="icon icon-plus"></i></button>
-        </form>
-        <div class="task-list" id="taskList"></div>
-      </div>
-
-      <div class="view-card">
-        <h3>Quick Notes</h3>
-        <p class="sub">Write notes and keep them in localStorage.</p>
-        <textarea id="notes" class="form-input" style="width:100%;height:320px;padding:14px;resize:vertical" placeholder="Your notes..."></textarea>
-        <div class="control-row" style="margin-top:10px">
-          <button class="primary-btn" id="saveNotes">Save notes</button>
-          <button class="outline-btn" id="clearNotes">Clear</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("taskForm").onsubmit = e => {
-    e.preventDefault();
-    const input = document.getElementById("taskInput");
-    const text = input.value.trim();
-    if (!text) return;
-    tasks.push({ id: Date.now(), text, done: false });
-    input.value = "";
-    saveTasks();
-    drawTasks();
-  };
-
-  document.getElementById("saveNotes").onclick = () => {
-    localStorage.setItem("auraNotes", document.getElementById("notes").value);
-    showToast("Notes saved locally.");
-  };
-
-  document.getElementById("clearNotes").onclick = () => {
-    document.getElementById("notes").value = "";
-    localStorage.removeItem("auraNotes");
-  };
-
-  document.getElementById("notes").value = localStorage.getItem("auraNotes") || "";
-  drawTasks();
+import {escapeHTML,showToast} from "./utils.js"; import {api,requireLogin} from "./api.js";
+let tasks=[];let reminderTimer;
+export async function renderAssistant(container){if(!requireLogin())return;container.innerHTML=`<div class="two-col"><div class="view-card"><h3>Personal Assistant</h3><p class="sub">Tasks are saved securely in your FastAPI account.</p><form id="taskForm" class="chat-composer"><input id="taskInput" placeholder="Add a task…" required><button class="send-btn" type="submit"><i class="icon icon-plus"></i></button></form><div class="task-reminder-form"><label>Optional reminder</label><input id="taskReminder" type="datetime-local"></div><div class="task-list" id="taskList"></div></div><div class="view-card"><h3>Quick Notes</h3><p class="sub">Notes are saved in the backend.</p><textarea id="notes" class="form-input" style="width:100%;height:320px;padding:14px;resize:vertical" placeholder="Your notes…"></textarea><div class="control-row" style="margin-top:10px"><button class="primary-btn" id="saveNotes">Save notes</button><button class="outline-btn" id="clearNotes">Clear</button></div></div></div>`;
+ document.getElementById("taskForm").onsubmit=async e=>{e.preventDefault();const text=document.getElementById("taskInput").value.trim(),r=document.getElementById("taskReminder").value;try{await api("/tasks",{method:"POST",body:JSON.stringify({text,reminder_at:r?new Date(r).toISOString():null})});if(r && "Notification" in window && Notification.permission==="default") await Notification.requestPermission();e.target.reset();await drawTasks();showToast("Task added");}catch(err){showToast(err.message)}};
+ document.getElementById("saveNotes").onclick=async()=>{try{await api("/notes",{method:"PUT",body:JSON.stringify({text:document.getElementById("notes").value})});showToast("Notes saved")}catch(e){showToast(e.message)}};
+ document.getElementById("clearNotes").onclick=async()=>{document.getElementById("notes").value="";try{await api("/notes",{method:"PUT",body:JSON.stringify({text:""})})}catch(e){showToast(e.message)}};
+ try{const n=await api("/notes");document.getElementById("notes").value=n.text||"";await drawTasks();}catch(e){showToast(e.message)}
+ clearInterval(reminderTimer);reminderTimer=setInterval(checkReminders,15000);checkReminders();
 }
-
-function drawTasks() {
-  const list = document.getElementById("taskList");
-  if (!list) return;
-  list.innerHTML = tasks.length ? tasks.map(task => `
-    <div class="task-item ${task.done ? "done" : ""}">
-      <input type="checkbox" ${task.done ? "checked" : ""} data-id="${task.id}">
-      <span>${escapeHTML(task.text)}</span>
-      <button data-delete="${task.id}" title="Delete"><i class="icon icon-trash-2"></i></button>
-    </div>
-  `).join("") : `<div class="result-box">No tasks yet.</div>`;
-
-  list.querySelectorAll("input[type=checkbox]").forEach(box => {
-    box.onchange = () => {
-      const task = tasks.find(t => t.id == box.dataset.id);
-      task.done = box.checked;
-      saveTasks();
-      drawTasks();
-    };
-  });
-
-  list.querySelectorAll("[data-delete]").forEach(btn => {
-    btn.onclick = () => {
-      tasks = tasks.filter(t => t.id != btn.dataset.delete);
-      saveTasks();
-      drawTasks();
-    };
-  });
-}
-
-function saveTasks() {
-  localStorage.setItem("auraTasks", JSON.stringify(tasks));
-}
+async function drawTasks(){tasks=await api("/tasks");const list=document.getElementById("taskList");if(!list)return;list.innerHTML=tasks.length?tasks.map(t=>`<div class="task-item ${t.done?"done":""}"><input type="checkbox" ${t.done?"checked":""} data-id="${t.id}"><span><b>${escapeHTML(t.text)}</b><small>Created ${new Date(t.created_at).toLocaleString()}${t.reminder_at?` • Reminder ${new Date(t.reminder_at).toLocaleString()}`:""}</small></span><button data-delete="${t.id}" title="Delete"><i class="icon icon-trash-2"></i></button></div>`).join(""):`<div class="result-box">No tasks yet.</div>`;list.querySelectorAll("input[type=checkbox]").forEach(b=>b.onchange=async()=>{await api(`/tasks/${b.dataset.id}`,{method:"PATCH",body:JSON.stringify({done:b.checked})});drawTasks()});list.querySelectorAll("[data-delete]").forEach(b=>b.onclick=async()=>{await api(`/tasks/${b.dataset.delete}`,{method:"DELETE"});drawTasks()});}
+async function checkReminders(){try{const due=await api("/reminders/due");for(const t of due){if("Notification"in window&&Notification.permission==="granted")new Notification("AURA Reminder",{body:t.text});else showToast(`Reminder: ${t.text}`);try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=880;g.gain.value=.08;o.start();o.stop(a.currentTime+.45)}catch{}}}catch{}}

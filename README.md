@@ -1,112 +1,78 @@
-# AURA — All-in-One AI Assistant Frontend
+# AURA AI — FastAPI Edition
 
-A futuristic, responsive frontend prototype inspired by the AURA poster.
+AURA is now a frontend + Python FastAPI application. FastAPI owns authentication, persistent tasks/reminders, notes, live weather proxying, voice-command interpretation, and AI chat. The browser handles UI, microphone speech recognition, YouTube navigation, and reminder notifications.
 
-## Included features
+## 1. Install Python
+Use Python 3.11+.
 
-1. Voice Assistant — browser Speech Recognition + Speech Synthesis
-2. Camera & Vision — camera permission, capture, preview, vision-backend-ready
-3. AI Chat — frontend demo with a clear place to connect a backend LLM
-4. YouTube — YouTube search + embedded search playback
-5. Weather — OpenWeatherMap API integration
-6. Personal Assistant — local tasks + notes with localStorage
-7. Maps — Google Maps/OpenStreetMap search links
-8. Document Analysis — TXT + PDF extraction using PDF.js
+## 2. Open a terminal in this folder
 
-## File structure
-
-```text
-AURA_AI_Frontend/
-├── index.html
-├── README.md
-├── css/
-│   └── style.css
-└── js/
-    ├── app.js
-    ├── utils.js
-    ├── chat.js
-    ├── voice.js
-    ├── vision.js
-    ├── youtube.js
-    ├── weather.js
-    ├── assistant.js
-    ├── maps.js
-    └── documents.js
+```powershell
+cd path\to\AURA_AI_Frontend_v2\aura
 ```
 
-## Run it
+## 3. Create a virtual environment (recommended)
 
-Because JavaScript modules and browser APIs work better through a local server, do not open `index.html` with `file://`.
-
-### VS Code
-Install the **Live Server** extension and click **Go Live**.
-
-### Python
-From this folder run:
-
-```bash
-python -m http.server 5500
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-Then open:
+If PowerShell blocks activation, run the server directly with `.venv\Scripts\python.exe` after installation.
 
-```text
-http://localhost:5500
+## 4. Install backend packages
+
+```powershell
+pip install -r requirements.txt
 ```
 
-## Weather API
+## 5. Create the environment file
 
-Open `js/weather.js`.
+Copy `.env.example` to `.env`:
 
-Replace:
-
-```js
-const WEATHER_API_KEY = "YOUR_OPENWEATHERMAP_API_KEY";
+```powershell
+copy .env.example .env
 ```
 
-with your key.
+Open `.env` and set:
 
-For a real production app, do NOT put private API keys in frontend JavaScript. Use a backend endpoint.
-
-## Real AI chat / vision
-
-This project intentionally does not place an OpenAI/Gemini secret key in the browser.
-
-Recommended production architecture:
-
-```text
-AURA Frontend
-      |
-      v
-Your Backend / FastAPI
-      |
-      +---- LLM API
-      +---- Vision API
-      +---- Weather API
-      +---- YouTube API
-      +---- Maps API
+```env
+OPENAI_API_KEY=your_openai_api_key
+JWT_SECRET=replace-with-a-long-random-secret
+OPENAI_MODEL=gpt-6-luna
 ```
 
-For your MCA project, this separation is useful because the frontend demonstrates the complete user experience while the backend can become the AI decision engine later.
+The OpenAI key stays on the Python server. Never put it inside `public`/frontend JavaScript or commit `.env` to Git.
 
-## Important browser permissions
+## 6. Start AURA
 
-- Microphone: required for Voice Assistant.
-- Camera: required for Vision.
-- Geolocation: optional for location-based weather.
-- PDF extraction: runs in the browser with PDF.js.
+```powershell
+python -m uvicorn backend:app --host 127.0.0.1 --port 8000 --reload
+```
 
-## Design direction
+Open:
 
-The UI follows the uploaded AURA poster's visual language:
-- dark futuristic blue background
-- cyan / violet glow
-- central AI core
-- modular tool cards
-- responsive mobile layout
-- animated orbital rings
-- glassmorphism panels
-- high-tech dashboard workspace
+`http://127.0.0.1:8000`
 
-## UI update
-The homepage now includes a **Quick Access** AURA tool panel with all 8 requested tools directly on the first screen. The panel is desktop-friendly and changes into a responsive 4-column/2-column tool launcher on smaller screens. AURA uses a distinctive **Audiowide + Orbitron** wordmark style for a futuristic high-tech identity.
+The FastAPI server serves the frontend and the `/api/*` endpoints from the same origin, so no frontend proxy configuration is needed.
+
+## Features
+
+- Signup/login with SQLite + JWT sessions.
+- Tasks stored per account, with creation timestamp and optional reminder time.
+- Browser notifications + alarm sound for due reminders while the AURA app is open.
+- Notes stored in the backend database.
+- Live weather via Open-Meteo, with geocoding and browser location support. No weather key is exposed.
+- YouTube search opens the real YouTube search page directly.
+- Voice commands are sent to FastAPI and executed by the browser. Examples:
+  - `Open YouTube and search for Python tutorials`
+  - `Open Weather in Pune`
+  - `Open Tasks and add a task finish my project at 6 PM`
+  - `Open AI Chat`
+- AI Chat uses OpenAI's Responses API through FastAPI. The API key never reaches the browser.
+
+## Reminder limitation
+A browser notification/alarm requires the AURA page to be open (or a future Web Push/service-worker deployment). The FastAPI database still stores reminder times even when the browser is closed.
+
+## Production deployment
+For a real public deployment, use HTTPS, a strong secret, a production database, restrictive CORS, secure cookies or another hardened auth setup, and a real Web Push/notification service for reminders. Do not use the development server/reload mode in production.

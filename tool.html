@@ -35,7 +35,7 @@
       <a href="index.html#tools">Tools</a>
     </nav>
 
-    <div class="top-actions">
+    <div class="top-actions"><span id="accountName" class="status-pill"></span><button class="outline-btn compact" id="logoutBtn">Logout</button>
       <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
         <i class="icon icon-sun"></i>
       </button>
@@ -79,5 +79,6 @@
   </main>
 
   <script type="module" src="js/app-tool.js"></script>
+  <script type="module">import {getUser,clearSession} from "./js/api.js"; const u=getUser(); const a=document.getElementById("accountName"); if(a&&u)a.textContent=u.name; document.getElementById("logoutBtn")?.addEventListener("click",()=>{clearSession();location.href="auth.html"});</script>
 </body>
 </html>
