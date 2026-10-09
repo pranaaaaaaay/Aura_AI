@@ -58,7 +58,7 @@ The FastAPI server serves the frontend and the `/api/*` endpoints from the same 
 
 ## Features
 
-- Signup/login with SQLite + JWT sessions.
+- Login/signup-free local workspace; AURA opens directly and stores tasks/notes in its local FastAPI database.
 - Tasks stored per account, with creation timestamp and optional reminder time.
 - Browser notifications + alarm sound for due reminders while the AURA app is open.
 - Notes stored in the backend database.

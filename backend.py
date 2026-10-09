@@ -78,13 +78,20 @@ def verify_password(password, stored):
 def token_for(user):
     return jwt.encode({"sub": str(user["id"]), "email": user["email"], "exp": datetime.now(timezone.utc)+timedelta(days=7)}, JWT_SECRET, algorithm="HS256")
 
-def current_user(authorization: str = Header(default="")):
-    if not authorization.startswith("Bearer "): raise HTTPException(401, "Login required")
-    try: payload = jwt.decode(authorization[7:], JWT_SECRET, algorithms=["HS256"])
-    except Exception: raise HTTPException(401, "Invalid or expired session")
-    conn=db(); user=conn.execute("SELECT id,name,email FROM users WHERE id=?", (payload["sub"],)).fetchone(); conn.close()
-    if not user: raise HTTPException(401, "User not found")
+def current_user():
+    """Return the shared local AURA workspace user; no login is required."""
+    conn = db()
+    user = conn.execute("SELECT id,name,email FROM users WHERE email=?", ("aura@local",)).fetchone()
+    if not user:
+        cur = conn.execute(
+            "INSERT INTO users(name,email,password_hash,created_at) VALUES(?,?,?,?)",
+            ("AURA User", "aura@local", hash_password(secrets.token_hex(24)), now_iso())
+        )
+        conn.commit()
+        user = conn.execute("SELECT id,name,email FROM users WHERE id=?", (cur.lastrowid,)).fetchone()
+    conn.close()
     return user
+
 
 class AuthIn(BaseModel):
     name: str = "AURA User"
@@ -107,25 +114,6 @@ class CommandIn(BaseModel): text: str
 
 @app.get("/api/health")
 def health(): return {"ok": True, "backend": "FastAPI"}
-
-@app.post("/api/auth/signup")
-def signup(data: AuthIn):
-    email=data.email.strip().lower()
-    if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email): raise HTTPException(400,"Enter a valid email")
-    conn=db()
-    if conn.execute("SELECT 1 FROM users WHERE email=?",(email,)).fetchone(): conn.close(); raise HTTPException(409,"An account with this email already exists")
-    cur=conn.execute("INSERT INTO users(name,email,password_hash,created_at) VALUES(?,?,?,?)",(data.name.strip() or "AURA User",email,hash_password(data.password),now_iso())); conn.commit()
-    user=conn.execute("SELECT id,name,email FROM users WHERE id=?",(cur.lastrowid,)).fetchone(); conn.close()
-    return {"token":token_for(user),"user":dict(user)}
-
-@app.post("/api/auth/login")
-def login(data: AuthIn):
-    conn=db(); user=conn.execute("SELECT * FROM users WHERE email=?",(data.email.strip().lower(),)).fetchone(); conn.close()
-    if not user or not verify_password(data.password,user["password_hash"]): raise HTTPException(401,"Incorrect email or password")
-    return {"token":token_for(user),"user":{"id":user["id"],"name":user["name"],"email":user["email"]}}
-
-@app.get("/api/auth/me")
-def me(user=Depends(current_user)): return dict(user)
 
 @app.get("/api/tasks")
 def list_tasks(user=Depends(current_user)):

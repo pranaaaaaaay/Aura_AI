@@ -7,14 +7,11 @@ import { renderAssistant } from "./assistant.js";
 import { renderMaps } from "./maps.js";
 import { renderDocuments } from "./documents.js";
 import { showToast } from "./utils.js";
-import { requireLogin, getUser, clearSession } from "./api.js";
 
 const toolView = document.getElementById("toolView");
 const title = document.getElementById("toolPageTitle");
 const themeBtn = document.getElementById("themeBtn");
 const clearBtn = document.getElementById("clearWorkspace");
-if (!requireLogin()) throw new Error("Login required");
-
 const tools = {
   chat: { name: "AI Chat", render: renderChat },
   voice: { name: "Voice Assistant", render: renderVoice },
